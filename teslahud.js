@@ -25,19 +25,7 @@ let dev = false;
         rpmGradient.addColorStop(1, '#fc4a1a');
         //rpmGradient.addColorStop(1, '#EF4836');
 
-        function speedNeedle(rotation) {
-            ctx.lineWidth = 2;
-
-            ctx.save();
-            ctx.translate(250, 250);
-            ctx.rotate(rotation);
-            ctx.strokeRect(-130 / 2 + 170, -1 / 2, 135, 1);
-            ctx.restore();
-
-            rotation += Math.PI / 180;
-        }
-
-        function rpmNeedle(rotation) {
+        function drawNeedle(rotation) {
             ctx.lineWidth = 2;
 
             ctx.save();
@@ -77,8 +65,21 @@ let dev = false;
 
         function calculateRPMAngel(x, a, b) {
             let degree = (a - b) * (x) + b;
-            let radian = (degree * Math.PI) / 180;
-            return radian >= -0.46153862656807704 ? radian : -0.46153862656807704;
+            let radian = (degree * Math.PI ) / 180;
+            return radian
+        }
+
+        function draw_assistance_level(level) {
+            ctx.font = "70px MuseoSans_900-webfont";
+            ctx.fillStyle = "#999";
+            ctx.fillText(level, 250, 460);
+
+            ctx.font = "50px MuseoSans_900-webfont";
+            ctx.fillStyle = "#333";
+            if (level > 0) 
+                ctx.fillText(level - 1, 210, 460);
+            if (level < 5) 
+                ctx.fillText(level + 1, 290, 460);
         }
 
         function drawSpeedo(speed, gear, rpm, topSpeed) {
@@ -86,7 +87,7 @@ let dev = false;
                 return false;
             } else {
                 speed = Math.floor(speed);
-                rpm = rpm * 10;
+                rpm = rpm;
             }
 
             ctx.clearRect(0, 0, 500, 500);
@@ -113,93 +114,61 @@ let dev = false;
 
             ctx.font = "70px MuseoSans_900-webfont";
             ctx.textAlign = "center";
-            ctx.fillText(speed, 250, 220);
+            ctx.fillText(speed, 250, 270);
 
             ctx.font = "15px MuseoSans_900-webfont";
-            ctx.fillText("mph", 250, 235);
+            ctx.fillText("km/h", 250, 295);
 
-            if (gear == 0 && speed > 0) {
-                ctx.fillStyle = "#999";
-                ctx.font = "70px MuseoSans_900-webfont";
-                ctx.fillText('R', 250, 460);
-
-                ctx.fillStyle = "#333";
-                ctx.font = "50px MuseoSans_900-webfont";
-                ctx.fillText('N', 290, 460);
-            } else if (gear == 0 && speed == 0) {
-                ctx.fillStyle = "#999";
-                ctx.font = "70px MuseoSans_900-webfont";
-                ctx.fillText('N', 250, 460);
-
-                ctx.fillStyle = "#333";
-                ctx.font = "50px MuseoSans_900-webfont";
-                ctx.fillText('R', 210, 460);
-
-                ctx.font = "50px MuseoSans_900-webfont";
-                ctx.fillText(parseInt(gear) + 1, 290, 460);
-            } else if (gear - 1 <= 0) {
-                ctx.fillStyle = "#999";
-                ctx.font = "70px MuseoSans_900-webfont";
-                ctx.fillText(gear, 250, 460);
-
-                ctx.fillStyle = "#333";
-                ctx.font = "50px MuseoSans_900-webfont";
-                ctx.fillText('R', 210, 460);
-
-                ctx.font = "50px MuseoSans_900-webfont";
-                ctx.fillText(parseInt(gear) + 1, 290, 460);
-            } else {
-                ctx.font = "70px MuseoSans_900-webfont";
-                ctx.fillStyle = "#999";
-                ctx.fillText(gear, 250, 460);
-
-                ctx.font = "50px MuseoSans_900-webfont";
-                ctx.fillStyle = "#333";
-                ctx.fillText(gear - 1, 210, 460);
-                if (parseInt(gear) + 1 < 7) {
-                    ctx.font = "50px MuseoSans_900-webfont";
-                    ctx.fillText(parseInt(gear) + 1, 290, 460);
-                }
-            }
-
+            draw_assistance_level(gear)
             ctx.fillStyle = "#FFF";
-            for (var i = 10; i <= Math.ceil(topSpeed / 20) * 20; i += 10) {
+
+            // Speed scale % lines
+            for (var i = 5; i <= Math.ceil(topSpeed / 10) * 10; i += 5) {
                 console.log();
-                drawMiniNeedle(calculateSpeedAngle(i / topSpeed, 83.07888, 34.3775) * Math.PI, i % 20 == 0 ? 3 : 1, i%20 == 0 ? i : '');
-                
-                if(i<=100) { 
-                    drawMiniNeedle(calculateSpeedAngle(i / 47, 0, 22.9183) * Math.PI, i % 20 == 0 ? 3 : 1, i % 20 ==
-                    0 ?
-                    i / 10 : '');
-                }
+                var speed_angle = calculateSpeedAngle(i / topSpeed, 83.07888, 34.3775) * Math.PI
+                drawMiniNeedle(speed_angle, i % 10 == 0 ? 3 : 1, i%10 == 0 ? i : '');
+            }
+            
+            var max_torque = 16;
+            for (var i = 0; i <= max_torque; i += 2) {
+                var division_angle = calculateRPMAngel(i / max_torque, -22.9183, 22.9183) * Math.PI;
+                drawMiniNeedle(division_angle, i % 4 == 0 ? 3 : 1, i % 4 == 0 ? i : '');
             }
 
+            var speed_indicator_angle = calculateSpeedAngle(speed / topSpeed, 83.07888, 34.3775) * Math.PI
+            var torque_indicator_angle =  calculateRPMAngel(rpm / max_torque, -22.9183, 22.9183) * Math.PI
+
+            // draw speed fill bar
             ctx.beginPath();
             ctx.strokeStyle = "#41dcf4";
             ctx.lineWidth = 25;
             ctx.shadowBlur = 20;
             ctx.shadowColor = "#00c6ff";
-
             ctx.strokeStyle = speedGradient;
-            ctx.arc(250, 250, 228, .6 * Math.PI, calculateSpeedAngle(speed / topSpeed, 83.07888, 34.3775) * Math.PI);
+            ctx.arc(250, 250, 228, .6 * Math.PI, speed_indicator_angle);
             ctx.stroke();
+
+            // draw torque fill bar
             ctx.beginPath();
             ctx.lineWidth = 25;
             ctx.strokeStyle = rpmGradient;
             ctx.shadowBlur = 20;
             ctx.shadowColor = "#f7b733";
-
-            ctx.arc(250, 250, 228, .4 * Math.PI, calculateRPMAngel(rpm / 4.7, 0, 22.9183) * Math.PI, true);
+            ctx.arc(250, 250, 228, .4 * Math.PI, torque_indicator_angle, true);
             ctx.stroke();
+
             ctx.shadowBlur = 0;
 
 
+            //draw speed needle
             ctx.strokeStyle = '#41dcf4';
-            speedNeedle(calculateSpeedAngle(speed / topSpeed, 83.07888, 34.3775) * Math.PI);
+            drawNeedle(speed_indicator_angle);
 
+            //draw torque needle
             ctx.strokeStyle = rpmGradient;
-            rpmNeedle(calculateRPMAngel(rpm / 4.7, 0, 22.9183) * Math.PI);
+            drawNeedle(torque_indicator_angle);
 
+            //reset stroke
             ctx.strokeStyle = "#000";
         }
 
@@ -210,5 +179,5 @@ document.addEventListener('DOMContentLoaded', function() {
 
     //setInterval(setSpeed, 100)
     //renderCanvas();
-    drawSpeedo(120,4,.8,160);
+    drawSpeedo(27,1,10,60);
 }, false);
