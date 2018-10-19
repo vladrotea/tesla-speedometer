@@ -5,17 +5,34 @@
     <title>Smart EBike</title>
   </head>
   <style>
-        @font-face {
-            font-family: 'MuseoSans_900-webfont';
-            src: url('fonts/MuseoSans_900-webfont.ttf');
-        }
-        .hud {
-            margin: auto;
-            width: 30%;
-        }
+    @font-face {
+        font-family: 'MuseoSans_900-webfont';
+        src: url('fonts/MuseoSans_900-webfont.ttf');
+    }
+    #hud{
+        width: 100%;
+
+        /* Firefox */
+        display: -moz-box;
+        -moz-box-pack: center;
+        -moz-box-align: center;
+
+        /* Safari and Chrome */
+        display: -webkit-box;
+        -webkit-box-pack: center;
+        -webkit-box-align: center;
+
+        /* W3C */
+        display: box;
+        box-pack: center;
+        box-align: center;
+    }
+    #canvas{
+        width: 20%;
+    }
   </style>
   <body>
-    <div id="hud" class="hud">
+    <div id="hud">
         <canvas id="canvas" height="inherit" width="inherit"></canvas>
     </div>
     <script src="teslahud.js"></script>
