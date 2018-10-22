@@ -91,12 +91,12 @@ var hud = (function(){
             ctx.fillText(level + 1, 290, 460);
     }
 
-    function drawSpeedo(socketConn) {
-        speed = socketConn.speed;
-        gear = socketConn.assistance;
-        rpm = socketConn.torque;
-        topSpeed = socketConn.heart;
-        time_of_day = socketConn.tod;
+    function drawSpeedo(socketData) {
+        speed = socketData.speed;
+        gear = socketData.assistance;
+        rpm = socketData.torque;
+        topSpeed = socketData.heart;
+        time_of_day = socketData.tod;
 
         if (speed == undefined) {
             return false;
