@@ -1,10 +1,10 @@
 document.addEventListener('DOMContentLoaded', function() {
     function connect(position) {
         console.log('Starting connection');
-        document.getElementById("overlay").style.display = "none";
         var ws = new WebSocket("ws://localhost:5678/");
         // Connection opened
         ws.addEventListener('open', function (event) {
+            document.getElementById("overlay").style.display = "none";
             ws.send(position.coords);
         });
         ws.onmessage = function (event) {
