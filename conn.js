@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Connection opened
         ws.addEventListener('open', function (event) {
             document.getElementById("overlay").style.display = "none";
-            ws.send(position.coords);
+            ws.send('(' + position.coords.latitude + ', ' + position.coords.longitude + ')');
         });
         ws.onmessage = function (event) {
             console.log('Data received ' + event.data);
