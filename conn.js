@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     function connect(position) {
         console.log('Starting connection');
+        document.getElementById("overlay").style.display = "none";
         var ws = new WebSocket("ws://localhost:5678/");
         // Connection opened
         ws.addEventListener('open', function (event) {
@@ -14,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
         ws.onclose = function (e) {
             console.log('connection lost');
             document.getElementById("overlay").style.display = "block";
+            setTimeout(connect(position), 1000);
         };
    }
 
