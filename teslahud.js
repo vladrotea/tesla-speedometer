@@ -13,21 +13,23 @@ var hud = (function(){
             'background_color' : 'rgba(0, 0, 0, .9)'
         }
     }
+    var width = 505;
+    var height = 505;
 
     var c = document.getElementById("canvas");
-    c.width = 800;
-    c.height = 800;
+    c.width = width;
+    c.height = height;
 
     var ctx = c.getContext("2d");
 
     //Rescale the size
     ctx.scale(1,1);
 
-    var speedGradient = ctx.createLinearGradient(0, 500, 0, 0);
+    var speedGradient = ctx.createLinearGradient(0, width, 0, 0);
     speedGradient.addColorStop(0, '#00b8fe');
     speedGradient.addColorStop(1, '#41dcf4');
 
-    var rpmGradient = ctx.createLinearGradient(0, 500, 0, 0);
+    var rpmGradient = ctx.createLinearGradient(0, width, 0, 0);
     rpmGradient.addColorStop(0, '#f7b733');
     rpmGradient.addColorStop(1, '#fc4a1a');
     //rpmGradient.addColorStop(1, '#EF4836');
@@ -89,7 +91,13 @@ var hud = (function(){
             ctx.fillText(level + 1, 290, 460);
     }
 
-    function drawSpeedo(speed, gear, rpm, topSpeed) {
+    function drawSpeedo(socketConn) {
+        speed = socketConn.speed;
+        gear = socketConn.assistance;
+        rpm = socketConn.torque;
+        topSpeed = socketConn.heart;
+        time_of_day = socketConn.tod;
+
         if (speed == undefined) {
             return false;
         } else {
@@ -97,7 +105,7 @@ var hud = (function(){
             rpm = rpm;
         }
 
-        ctx.clearRect(0, 0, 500, 500);
+        ctx.clearRect(0, 0, width, height);
 
         ctx.beginPath();
         ctx.fillStyle = color[time_of_day].background_color;

@@ -10,28 +10,28 @@
         src: url('fonts/MuseoSans_900-webfont.ttf');
     }
     #hud{
-        width: 100%;
-
-        /* Firefox */
-        display: -moz-box;
-        -moz-box-pack: center;
-        -moz-box-align: center;
-
-        /* Safari and Chrome */
-        display: -webkit-box;
-        -webkit-box-pack: center;
-        -webkit-box-align: center;
-
-        /* W3C */
-        display: box;
-        box-pack: center;
-        box-align: center;
+        padding-left: 20%;
+        padding-right: 20%;
     }
     #canvas{
-        width: 20%;
+        width: 100%;
+    }
+    #overlay {
+        position: fixed;
+        display: none;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0,0,0,0.5);
+        z-index: 2;
+        cursor: pointer;
     }
   </style>
   <body>
+    <div id="overlay"></div>
     <div id="hud">
         <canvas id="canvas" height="inherit" width="inherit"></canvas>
     </div>
