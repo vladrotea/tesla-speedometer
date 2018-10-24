@@ -95,7 +95,7 @@ var hud = (function(){
         speed = socketData.speed;
         gear = socketData.assistance;
         rpm = socketData.torque;
-        topSpeed = socketData.heart;
+        topSpeed = 60
         time_of_day = socketData.tod;
 
         if (speed == undefined) {
