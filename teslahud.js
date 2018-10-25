@@ -144,10 +144,10 @@ var hud = (function(){
                 drawMiniNeedle(speed_angle, i % 10 == 0 ? 3 : 1, i%10 == 0 ? i : '');
         }
 
-        var max_torque = 16;
-        for (var i = 0; i <= max_torque; i += 2) {
+        var max_torque = 700;
+        for (var i = 0; i <= max_torque; i += 50) {
             var division_angle = calculateRPMAngel(i / max_torque, -22.9183, 22.9183) * Math.PI;
-            drawMiniNeedle(division_angle, i % 4 == 0 ? 3 : 1, i % 4 == 0 ? i : '');
+            drawMiniNeedle(division_angle, i % 100 == 0 ? 3 : 1, i % 100 == 0 ? i : '');
         }
 
         var speed_indicator_angle = calculateSpeedAngle(speed / topSpeed, 83.07888, 34.3775) * Math.PI
