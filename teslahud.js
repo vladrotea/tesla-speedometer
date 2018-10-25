@@ -95,6 +95,7 @@ var hud = (function(){
         speed = socketData.speed;
         gear = socketData.assistance;
         rpm = socketData.torque;
+        heartbeat = socketData.heart;
         topSpeed = 60
         time_of_day = socketData.tod;
 
@@ -126,6 +127,7 @@ var hud = (function(){
         ctx.lineWidth = 1;
         ctx.arc(250, 250, 240, 0, 2 * Math.PI);
         ctx.stroke();
+         
 
         ctx.font = "70px MuseoSans_900-webfont";
         ctx.textAlign = "center";
@@ -134,13 +136,20 @@ var hud = (function(){
         ctx.font = "15px MuseoSans_900-webfont";
         ctx.fillText("km/h", 250, 295);
 
+        //draw heartbeat
+        ctx.fillStyle = "#A40707"
+        ctx.font = "40px MuseoSans_900-webfont"
+        ctx.textAlign = "center"
+        ctx.fillText(heartbeat, 250, 60)
+        ctx.stroke()
+
         draw_assistance_level(gear)
             ctx.fillStyle = color[time_of_day].symbol_color;
 
         // Speed scale % lines
         for (var i = 5; i <= Math.ceil(topSpeed / 10) * 10; i += 5) {
             console.log();
-            var speed_angle = calculateSpeedAngle(i / topSpeed, 83.07888, 34.3775) * Math.PI
+            var speed_angle = calculateSpeedAngle(i / topSpeed, 80.07888, 34.3775) * Math.PI
                 drawMiniNeedle(speed_angle, i % 10 == 0 ? 3 : 1, i%10 == 0 ? i : '');
         }
 
