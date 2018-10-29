@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    function connect() {
+    function connect(connect) {
         console.log('Starting connection');
         var ws = new WebSocket("ws://192.168.7.2:5678/");
         // Connection opened
@@ -19,7 +19,6 @@ document.addEventListener('DOMContentLoaded', function() {
         };
    }
 
-//   navigator.geolocation.getCurrentPosition(connect);
-connect();
+    navigator.geolocation.getCurrentPosition(connect);
 
 }, false);
