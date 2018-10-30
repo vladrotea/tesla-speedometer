@@ -9,7 +9,7 @@ CERT_PATH = os.path.join(REAL_PATH, 'certs/host.cert')
 KEY_PATH = os.path.join(REAL_PATH, 'certs/host.key')
 print(KEY_PATH)
 
-SERVER_ADDRESS = ('127.0.0.1', 4443)
+SERVER_ADDRESS = ('0.0.0.0', 4443)
 
 Handler = http.server.SimpleHTTPRequestHandler
 
