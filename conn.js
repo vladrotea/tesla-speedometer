@@ -1,23 +1,51 @@
 document.addEventListener('DOMContentLoaded', function() {
-    function connect(position) {
+    var geolocation_options = {
+          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 10000
+    };
+
+    var ws;
+
+    function connect() {
         console.log('Starting connection');
-        var ws = new WebSocket("wss://192.168.7.2:5678/");
+        ws = new WebSocket("wss://192.168.7.2:5678/");
         // Connection opened
         ws.addEventListener('open', function (event) {
+            console.log("Socket opened")
             document.getElementById("overlay").style.display = "none";
-            ws.send('(' + 46.7667 + ', ' + 23.6 + ')');
         });
+
         ws.onmessage = function (event) {
             console.log('Data received ' + event.data);
             var data = JSON.parse(event.data);
             hud.drawSpeed(data);
         }
+
         ws.onclose = function (e) {
             console.log('connection lost');
             document.getElementById("overlay").style.display = "block";
             setTimeout(connect(), 1000);
         };
-   }
-    navigator.geolocation.getCurrentPosition(connect);
+    }
+
+    connect();
+
+    function update_location(position) {
+        if(ws.readyState === ws.OPEN) {
+            var coords = new Object()
+            coords.lat = position.coords.latitude
+            coords.long = position.coords.longitude
+            message = JSON.stringify(coords)
+            console.log(message)
+            ws.send(message)
+        }
+    }
+
+    function location_error(err) {
+        console.warn(`ERROR(${err.code}): ${err.message}`);
+    }
+
+    navigator.geolocation.watchPosition(update_location, location_error, geolocation_options);
 
 }, false);
