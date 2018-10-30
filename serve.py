@@ -2,9 +2,12 @@ import ssl
 import os
 import http.server
 
-REAL_PATH, _ = os.path.split(os.path.realpath(__file__))
-CERT_PATH = os.path.join(REAL_PATH, 'host.cert')
-KEY_PATH = os.path.join(REAL_PATH, 'host.key')
+from pathlib import Path
+
+REAL_PATH = Path(__file__).resolve().parents[1]
+CERT_PATH = os.path.join(REAL_PATH, 'certs/host.cert')
+KEY_PATH = os.path.join(REAL_PATH, 'certs/host.key')
+print(KEY_PATH)
 
 SERVER_ADDRESS = ('127.0.0.1', 4443)
 
