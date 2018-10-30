@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
-    function connect(connect) {
+    function connect(position) {
         console.log('Starting connection');
-        var ws = new WebSocket("ws://192.168.7.2:5678/");
+        var ws = new WebSocket("wss://localhost:5678/");
         // Connection opened
         ws.addEventListener('open', function (event) {
             document.getElementById("overlay").style.display = "none";
@@ -18,7 +18,6 @@ document.addEventListener('DOMContentLoaded', function() {
             setTimeout(connect(), 1000);
         };
    }
-
     navigator.geolocation.getCurrentPosition(connect);
 
 }, false);
