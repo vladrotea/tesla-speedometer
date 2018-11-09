@@ -5,7 +5,17 @@ document.addEventListener('DOMContentLoaded', function() {
           maximumAge: 10000
     };
 
+    document.getElementById("reset-log").onclick = reset_log;
     var ws;
+
+    function reset_log() {
+        if(confirm("Are you sure")) {
+            var action = new Object();
+            action.action = 'logreset';
+            msg = JSON.stringify(action);
+            ws.send(msg)
+        }
+    }
 
     function connect() {
         console.log('Starting connection');

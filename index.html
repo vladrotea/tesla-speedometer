@@ -28,6 +28,7 @@
         background-color: rgba(0,0,0,0.5);
         z-index: 2;
         cursor: pointer;
+        display: block;
     }
     body {
          background-color: #4F4C4C;
@@ -37,6 +38,9 @@
     <div id="overlay"></div>
     <div id="hud">
         <canvas id="canvas" height="inherit" width="inherit"></canvas>
+    </div>
+    <div style="text-align: center">
+        <button id="reset-log">Reset log</button>
     </div>
     <script src="teslahud.js?v=1.1.0"></script>
     <script src="conn.js"></script>
